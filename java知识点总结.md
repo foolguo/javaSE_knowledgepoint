@@ -347,3 +347,43 @@ parseInt
 
 
 
+异常：
+
+首先 
+
+​								throwable
+
+​	error   (程序内部错误或者资源耗尽)                                       exception
+
+​											IOException		RuntimeException（运行时异常）
+
+​                                     					（输入流或输出流产生的异常）		
+
+受查异常和非受查异常：
+
+受查异常：java强制要求用户处理的异常：
+
+非受查异常：不强制要求用户处理的异常，Error和runtimeException以及它的直接子类
+
+
+
+异常处理格式：
+
+try ....catch....     try...finally...     try...catch...finally
+
+
+
+try(捕获异常)
+
+catch(处理异常)
+
+finally(执行重要的语句，在finally所在范围内的代码一定会被执行)
+
+
+
+关键字： throws:用在方法上，抛出异常到主方法，主方法也可以，抛出到JVM，但是本身不对异常进行任何处理
+
+​		throw:自定义异常
+
+
+
