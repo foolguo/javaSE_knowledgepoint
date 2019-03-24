@@ -78,11 +78,11 @@ public class Test {
 
 **重点：Class提供的newInctance()方法,调用的是类中的无参构造，如果没有无参构造或者权限不是public，此方法无法使用！！！**|下
 
-##关注Constructor类的如下方法：
+**关注Constructor类的如下方法：**
 
-public T newInstance(Object...initarges);
+**public T newInstance(Object...initarges);**
 
-重要：<u>如果类中没有无参构造，则只能调用Constructor类提供的newInstance()方法使用有参构造来实例化对象</u>
+**重**要：<u>如果类中没有无参构造，则只能调用Constructor类提供的newInstance()方法使用有参构造来实例化对象</u>
 
 ```java
 class Person{
@@ -117,7 +117,7 @@ public class Test{
 
 public Method getMethod(String name，Class<?>...parameterTypes){}
 
-public Method getDeclaredMethod(String name，Class<?>...parameterTypes){}
+public Method getDeclaredMethod(String name，Class<?>...parameterTypes){}//name是方法名
 
 取得类中所有普通方法：
 
@@ -125,7 +125,7 @@ public Method[] getMethods(){}//在本类和父类中找所有public的方法 �
 
 public Method[] getDeclaredMethods(){}在本类中找所有权限的方法
 
-取得普通方法是为了用，所以有一个invoke（Object obj，Object...args）  obj是类的对象，args普通方法参数
+**取得普通方法是为了用，所以Method有一个invoke（Object obj，Object...args）  obj是类的对象，args普通方法参数**
 
 
 
@@ -144,4 +144,53 @@ public Fied getDeclaredFied(String name)
 public Field getFields() throws securityException
 
 public Field getDeclaredFields() throws securityException
+
+
+
+**拿到属性是为了设置和取得值**
+
+Field设置和取得值的方式，
+
+a.设置值
+
+public void set(Object obj,Object value)
+
+b.取得值
+
+public Object get(Object obj)
+
+c. 取得属性类型
+
+public Class<?> getType()
+
+
+
+set和get所设置或者取得的属性**不能是私有的**，否则
+
+```java
+
+
+Exception in thread "main" java.lang.IllegalAccessException: Class Test can not access a member of class Person with modifiers "private"  //非法访问异常
+
+	at sun.reflect.Reflection.ensureMemberAccess(Reflection.java:102)
+
+	at java.lang.reflect.AccessibleObject.slowCheckMemberAccess(AccessibleObject.java:296)
+
+	at java.lang.reflect.AccessibleObject.checkAccess(AccessibleObject.java:288)
+
+	at java.lang.reflect.Field.set(Field.java:761)
+
+	at Test.main(Test.java:18)
+
+```
+
+下面就可以解决
+
+#动态破坏封装--在一次JVM进程中 ，只能通过反射调用
+
+Constructor  Method Field都继承与AccessibleObject类，此类中有一个破坏封装的方法
+
+```java
+public void set setAccessible(boolean flag)throws SecurityException
+```
 
