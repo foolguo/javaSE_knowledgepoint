@@ -91,7 +91,7 @@ mysql> select *from tt9;
 
 ##char(L)和varchar(L)
 
-char(L)  表示L表示可以存储的长度，单位为字符，最大长度可以是225；L一旦确定，表示不管插入数据的大小，都会讲字段占满  ，适合存放定长的字段
+char(L)  表示L表示可以存储的长度，单位为字符，最大长度可以是225字符；L一旦确定，表示不管插入数据的大小，都会讲字段占满  ，适合存放定长的字段
 
 varchar (L):可变长字符串，L表示字符长度，最大可存放65535；
 
@@ -176,3 +176,60 @@ mysql> select * from tt11;
 3 rows in set (0.00 sec)
 ```
 
+现在如果要查询所有有共同爱好的人
+
+用select find_in_set(sub,str_list');
+
+```mysql
+mysql> create table tt12(
+    -> name varchar(2),
+    -> hobby set('吃饭','睡觉','打豆豆'),
+    -> gender enum('男','女')
+    -> );
+Query OK, 0 rows affected (0.48 sec)
+
+mysql> insert into tt12 values('张三','吃饭','男');
+Query OK, 1 row affected (0.13 sec)
+
+mysql> insert into tt12 values('花花','吃饭,打豆豆','女');
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into tt12 values('王麻子','吃饭,打豆豆','1');
+ERROR 1406 (22001): Data too long for column 'name' at row 1
+
+//这里错是因为 那么初始设置的长度太短  用alter table midify修改
+mysql> alter table tt12 modify name varchar(4);
+Query OK, 0 rows affected (0.19 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+//111111
+mysql> insert into tt12 values('王麻子','吃饭,打豆豆','1');
+Query OK, 1 row affected (0.11 sec)
+
+mysql> select *from tt12 where find_in_set('打豆豆',hobby);
++--------+-------------+--------+
+| name   | hobby       | gender |
++--------+-------------+--------+
+| 花花   | 吃饭,打豆豆 | 女     |
+| 王麻子 | 吃饭,打豆豆 | 男     |
++--------+-------------+--------+
+2 rows in set (0.00 sec)
+```
+
+在上述//11111
+
+中枚举栏我插入的是  1而不是  ‘男’
+
+```mysql
+mysql> insert into tt12 values('王麻子','吃饭,打豆豆','1');
+Query OK, 1 row affected (0.11 sec)
+```
+
+枚举在表创建的时候设置若干个值，但是在实际插入的时候单元格只有一个值，为了效率，enum实际上存储的是数字  从1-65536个，当我们添加枚举是也可以添加对应的数据编号
+
+set：集合，“多选”类型；
+set('选项值1','选项值2','选项值3', ...);
+该设定只是提供了若干个选项的值，最终一个单元格中，设计可存储了其中任意多个值；而且出于效率考虑，这些
+值实际存储的是“数字”，因为这些选项的每个选项值依次对应如下数字：1,2,4,8,16,32，.... 最多64个
+
+> 虽然可以这样去设置，但是不建议这样做，因为阅读起来不方便

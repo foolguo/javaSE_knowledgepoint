@@ -1,3 +1,25 @@
+# MySQL基础
+
+1.MySQL的存储引擎(可插拔的存储引擎)
+
+InnoDB(默认存储引擎)  ，Memory，MyISAM
+
+2.SQL分类
+
+DDL数据定义语言，用来维护存储数据结构
+
+creat  drop  alter
+
+DML数据库操纵语言，用来对数据进行操作
+
+insert  delete  update
+
+DCL数据控制语言，主要负责权限管理和事物
+
+grant  revoke  commit
+
+
+
 # MySQL 基本操作语句
 
 ##创建数据库及其数据库表
@@ -34,6 +56,12 @@ create database if not exists students character set utf8 collate utf8_bin;//区
 ```
 
 待字符集和校验规则
+
+修改数据库的字符集
+
+```mysql
+alter database  db3 charset=gbk;
+```
 
 
 
@@ -93,6 +121,12 @@ select *from student where id='1';
 
 ```mysql
 show create database 数据库名；
+```
+
+ 查看建表语句
+
+```mysql
+show create table 表名
 ```
 
 

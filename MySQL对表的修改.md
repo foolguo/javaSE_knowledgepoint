@@ -32,8 +32,10 @@ insert into student (ID,name birthday,age) values(1,'xxxx','1996-4-17',20),(2,'*
 select *from student；
 
 //修改数据库表名字
-//to是可选项
+//to可以省略
 alter table student rename to school;
+//修改字符串表中的一个字段名字
+alter table student change name xingming varchar(10);
 
 //增加数据库表的字段
 alter table student add sex varchar(2) after name;
@@ -45,8 +47,6 @@ alter table student modify ID varchar(10);
 //删除字符串表中的一个子段
 alter table student drop sex；
 
-//修改字符串表中的一个字段名字
-alter table student change name xingming varchar(10);
 
 //删除数据表
 drop table student;
