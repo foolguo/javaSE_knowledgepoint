@@ -169,7 +169,7 @@ public BufferedReader(Reader in)
 
 **但是，BufferedReader进行输入最大的缺点就是输入内容都是字符串**
 
-
+##Scanner
 
 所以在java.util包下提供了一个Scanner类，构造方法 可以传入
 
@@ -177,13 +177,13 @@ public BufferedReader(Reader in)
 public Scanner(InputStream source)
 ```
 
-并且，还可以自定义结束符号(分割符)
+并且，还可以(分割符)（**别用**）
 
 ```java
 public Scanner useDelimiter(Pattern pattern)
 ```
 
-判断是否由指定类型
+判断是否由指定类型     **：Scanner默认碰到空格 换行 Tab都是分割符，无论如何定义分隔符 enter 表示本次输入完毕**
 
 ```java
 public boolean hasNextXXX()
@@ -209,9 +209,9 @@ public class Test {
 }
 ```
 
-而且Scanner还可以代替InputStream类的功能
+**而且Scanner还可以代替InputStream类的功能**
 
-**将文件的所有内容输入到程序，输出代码**
+将文件的所有内容输入到程序，输出代码
 
 ```java
 public class Test {
@@ -228,18 +228,3 @@ public class Test {
 
 ```
 
-## 序列化和反序列化
-
-序列化:将实例化对象转换为二进制的数据流进行传输或者保存到文本中
-
-反序列化：将二进制数据流转换成实例化对象输出到程序中
-
-要实现序列化和反序列化就要实现一个接口  java.io.Serializable;但是这个类本身没有任何内容  就是一个标记
-
-序列化：ObjectOutputStream    
-
-反序列化：ObjectInputStream
-
-##transient关键字
-
-如果一个类的属性被transient修饰，那么这个类在序列化时就不会被序列化，即不会被保存（密码肯定不希望被保存所以可以用transient修饰）；
