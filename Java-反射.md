@@ -80,10 +80,10 @@ public class Test{
 
 | 取得类构造方法的                                             | 描述                                 |
 | ------------------------------------------------------------ | ------------------------------------ |
-| public Constructor<?>[] getConstructors() throws SecurityException | 获取本类和父类的所有public的构造方法 |
+| public Constructor<?>[] getConstructors() throws SecurityException | 获取本类public的构造方法             |
 | public Constructor<?>[] getDeclaredConstructors() throws SecurityException | 获取本类声明的所有权限的构造方法     |
-| public Constructor<T> getConstructor(Class<?>... parameterTypes)     throws NoSuchMethodException, SecurityException | 获取本类指定参数的构造方法           |
-| public Constructor<T> getDeclaredConstructor(Class<?>... parameterTypes)     throws NoSuchMethodException, SecurityException | 获得本类所有权限的构造方法           |
+| public Constructor<T> getConstructor(Class<?>... parameterTypes)     throws NoSuchMethodException, SecurityException | 获取本类指定参数的public构造方法     |
+| public Constructor<T> getDeclaredConstructor(Class<?>... parameterTypes)     throws NoSuchMethodException, SecurityException | 获得本类指定参数的所有权限的构造方法 |
 
 **得到Constructor后可以根据    **
 
@@ -197,12 +197,12 @@ public class Test {
 
 ## 4.取得Method的对象
 
-| 取得类方法的                                                 | 描述                                                 |
-| ------------------------------------------------------------ | ---------------------------------------------------- |
-| public Method[] getDeclaredMethods() throws SecurityException | 取得本类中的所有权限的方法包括static                 |
-| public Method getDeclaredMethod(String name, Class<?>... parameterTypes)     throws NoSuchMethodException, SecurityException | 取得本类中指定名字的的任意权限的方法，包括static方法 |
-| public Method[] getMethods() throws SecurityException        | 取得本类和父类public权限的方法 包括static            |
-| public Method getMethod(String name, Class<?>... parameterTypes)     throws NoSuchMethodException, SecurityException | 取得本类和父类指定名字public权限的方法包括static     |
+| 取得类方法的                                                 | 描述                                                     |
+| ------------------------------------------------------------ | -------------------------------------------------------- |
+| public Method[] getDeclaredMethods() throws SecurityException | 取得本类声明的所有权限的方法包括static                   |
+| public Method getDeclaredMethod(String name, Class<?>... parameterTypes)     throws NoSuchMethodException, SecurityException | 取得本类声明，指定名字的的任意权限的方法，包括static方法 |
+| public Method[] getMethods() throws SecurityException        | 取得本类和父类public权限的方法 包括static                |
+| public Method getMethod(String name, Class<?>... parameterTypes)     throws NoSuchMethodException, SecurityException | 取得本类和父类指定名字public权限的方法包括static         |
 
 ```java
 public Object invoke(Object obj, Object... args)
@@ -239,12 +239,12 @@ public class Test {
 
 ## 5.取得类的属性
 
-| 取得类的属性                                                 | 描述                                             |
-| ------------------------------------------------------------ | ------------------------------------------------ |
-| public Field[] getFields() throws SecurityException          | 取得本类和父类的public权限的所有属性包括static   |
-| public Field getField(String name)     throws NoSuchFieldException, SecurityException | 取得本类和父类指定名字public权限的属性包括static |
-| public Field[] getDeclaredFields() throws SecurityException  | 取得本类中所有权限的属性 包括static              |
-| public Field getDeclaredField(String name)     throws NoSuchFieldException, SecurityException | 取得本类中指定名字所有权限的属性，包括static     |
+| 取得类的属性                                                 | 描述                                               |
+| ------------------------------------------------------------ | -------------------------------------------------- |
+| public Field[] getFields() throws SecurityException          | 取得本类和父类的public权限的所有属性包括static     |
+| public Field getField(String name)     throws NoSuchFieldException, SecurityException | 取得本类和父类指定名字public权限的属性包括static   |
+| public Field[] getDeclaredFields() throws SecurityException  | 取得本类声明的，所有权限的属性 包括static          |
+| public Field getDeclaredField(String name)     throws NoSuchFieldException, SecurityException | 取得本类声明的，指定名字所有权限的属性，包括static |
 
 还有一组取得和设置属性的方法
 

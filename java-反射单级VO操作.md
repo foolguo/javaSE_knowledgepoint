@@ -8,9 +8,9 @@ java-反射单级VO操作
 
 ```java
 
-public class Emp {
+class Emp{
     private String name;
-    private String job;
+    private String dept;
 
     public String getName() {
         return name;
@@ -20,30 +20,23 @@ public class Emp {
         this.name = name;
     }
 
-    public String getJob() {
-        return job;
+    public String getDept() {
+        return dept;
     }
 
-    public void setJob(String job) {
-        this.job = job;
+    public void setDept(String dept) {
+        this.dept = dept;
     }
-     @Override
+
+    @Override
     public String toString() {
         return "Emp{" +
                 "name='" + name + '\'' +
-                ", job='" + job + '\'' +
+                ", dept='" + dept + '\'' +
                 '}';
     }
 }
 
-public class Test {
-    public static void main(String[] args) {
-        Emp emp=new Emp();
-        emp.setName("托尼老师");
-        emp.setJob("前台");
-                      
-    }
-}
 ```
 
 现在有需求要一次性设置这两个值  传入  属性1：xxx|属性2：xxx
@@ -51,12 +44,13 @@ public class Test {
 首先创建一个EmpAction类，这个类是真实交给用户操作的类
 
 ```java
-public class EmpAction {
+class EmpAction{
     private Emp emp=new Emp();
-    public void setValue(String value) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        BeanUtil.setBeanValue(this,value);
+    public  void setValue(String name) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        BeanUtil.setValue(this,name);
     }
-    public  Emp getEmp(){
+
+    public Emp getEmp() {
         return emp;
     }
 }
@@ -68,35 +62,41 @@ public class EmpAction {
 还有一个工具类，是设置值的类
 
 ```java
-public class BeanUtil {
-    public static void setBeanValue(Object obj,String str) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        String[] result=str.split("\\|");
-        for(int i=0;i<result.length;i++){
-            String name=result[i].split(":")[0];
-            String value=result[i].split(":")[1];
-            //获取类对象EMP-通过传入的EmpAction的实例化对象obj调用
-            Object currentObj=getObject(obj);
-            //调用真实类的setter类
-            setValue(currentObj,value,name);//传入emp对象，要设置的值，方法
+class BeanUtil{
+    /*
+    * 传入：
+    * emp.name:HaHa|emp.dept: 上班
+    * */
+    public static void setValue(Object obj,String name) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
+        String[] value=name.split("\\|");
+        for(int i=0;i<value.length;i++){
+            //属性值HaHa
+            String realValue=value[i].split(":")[1];
+            //类名 emp
+            String objectValue=value[i].split(":")[0].split("\\.")[0];
+            //属性名 name
+            String objectName=value[i].split(":")[0].split("\\.")[1];
+            Object objectAction=getObject(obj,objectValue);
+            setValueObject(objectAction,objectName,realValue);
+
         }
     }
-    public static Object getObject(Object obj) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        String methodName="getEmp";
-        Class cls=obj.getClass();//获取cls对象
-        Method method=cls.getMethod(methodName);//获取对象的get方法
-        return method.invoke(obj);//通过invoke调用invoke方法----->获取到EMP对象
-    }
-    public static void setValue(Object obj,String value,String name) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        String methodName="set"+intiCap(name);
+    public static Object getObject(Object obj,String objectValue) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
         Class cls=obj.getClass();
-        Method method=cls.getMethod(methodName,String.class);
-        method.invoke(obj,value);//通过invoke设置值
+        String str="get"+spellName(objectValue);
+        Method method=cls.getMethod(str);
+        return method.invoke(obj);
+    }
+    public static void setValueObject(Object obj,String objectName,String value) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+            Class cls=obj.getClass();
+            String str = "set"+spellName(objectName);
+            Method method=cls.getMethod(str,String.class);
+            method.invoke(obj,value);
 
     }
-    public static String intiCap(String str){
-        return str.substring(0,1).toUpperCase()+str.substring(1);
+    public static String spellName(String name){
+        return name.substring(0,1).toUpperCase()+name.substring(1);
     }
-
 }
 ```
 
